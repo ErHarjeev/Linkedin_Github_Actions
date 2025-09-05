@@ -1,27 +1,20 @@
-name: Environment Variables
-env: 
-  WORKFLOW_VAR: 'Workflow Env'
-  OVERIDE_VAR: 'Workflow'
+name: Download Artifacts
 on: push
+
+env:
+  FILE_NAME: mydownloads.txt
+  
 jobs:
-  ubuntu:
-    name: 'Running Job for Ubuntu'
-    runs-on: ubuntu-latest
-    env:
-      JOBS_VAR: 'Jobs Var'
+  Ubuntu: 
+    name: Ubunut Download artifacts
+    runs-on : ubuntu-latest
     steps:
-      - name: Print Variables
-        env:
-          STEPS_VAR: 'Steps Variable'
-          OVERRIDE_VAR: 'step'
-        run: |
-          echo "1. $WORKFLOW_VAR"
-          echo "2. $JOBS_VAR"
-          echo "3. $STEPS_VAR"
-          echo "4. $OVERRIDE_VAR"
-          echo "-----------------"
-          echo "1. ${{env.WORKFLOW_VAR}}"
-          echo "2. ${{env.JOBS_VAR}}"
-          echo "3. ${{env.STEPS_VAR}}"
-          echo "4. ${{env.OVERRIDE_VAR}}"
+       - name: Checkout repos
+         uses: actions/checkout@v5.0.0
+       - name: creating a file
+         run: echo "this is new file" > ${{env.FILE_NAME}}
+       - name: Upload Artifact
+         uses: actions/upload-artifact@v4.6.2
+           name: mycustomfile
+           path: ${{env.FILE_NAME}}
           
